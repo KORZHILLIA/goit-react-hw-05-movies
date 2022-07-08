@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams, Outlet } from 'react-router-dom';
 import { fetchDifferentMovieFeatures } from 'shared/services/moviesApi';
 import MovieExplicit from 'components/MovieExplicit';
 
@@ -10,13 +10,13 @@ const MovieDetails = () => {
     error: null,
   });
 
-  const { movieId: id } = useParams();
+  const { movieId } = useParams();
 
   useEffect(() => {
     const getMovie = async () => {
       setState(prevState => ({ ...prevState, loading: true }));
       try {
-        const requiredMovie = await fetchDifferentMovieFeatures(id);
+        const requiredMovie = await fetchDifferentMovieFeatures(movieId);
         setState(prevState => ({
           ...prevState,
           loading: false,
@@ -27,9 +27,9 @@ const MovieDetails = () => {
       }
     };
     getMovie();
-  }, []);
+  }, [movieId]);
 
-  const { movie } = state;
+  const { movie, error, loading } = state;
   const {
     backdrop_path,
     original_title,
@@ -41,16 +41,19 @@ const MovieDetails = () => {
 
   return (
     <>
-      {movie && (
-        <MovieExplicit
-          img={backdrop_path}
-          title={original_title}
-          date={release_date}
-          score={popularity}
-          overview={overview}
-          genres={genres}
-        />
-      )}
+      {loading && <p>Loading</p>}
+      {error && <p>{error}</p>}
+      <MovieExplicit
+        img={backdrop_path}
+        title={original_title}
+        date={release_date}
+        score={popularity}
+        overview={overview}
+        genres={genres}
+      />
+      <Link to="cast">Cast</Link>
+      <Link to="reviews">Reviews</Link>
+      <Outlet />
     </>
   );
 };

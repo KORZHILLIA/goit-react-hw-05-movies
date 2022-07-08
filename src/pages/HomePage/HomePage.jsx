@@ -15,7 +15,12 @@ const HomePage = () => {
         const { results: movies } = await getTrendingMoviesForDay();
         setState(prevState => ({ ...prevState, loading: false, movies }));
       } catch (error) {
-        setState(prevState => ({ ...prevState, error: error.message }));
+        setState(prevState => ({
+          ...prevState,
+          loading: false,
+          movies: [],
+          error: error.message,
+        }));
       }
     };
     getTrendingMovies();
@@ -30,7 +35,7 @@ const HomePage = () => {
   return (
     <>
       {loading && <p>Loading</p>}
-      {error && <p>Error</p>}
+      {error && <p>{error}</p>}
       <ul>{homePageMovies}</ul>
     </>
   );
