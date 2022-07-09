@@ -5,7 +5,7 @@ import Review from 'components/Review';
 
 const Reviews = () => {
   const [state, setState] = useState({
-    reviews: {},
+    reviews: [],
     loading: false,
     error: null,
   });
@@ -16,7 +16,10 @@ const Reviews = () => {
     const getCast = async () => {
       setState(prevState => ({ ...prevState, loading: true }));
       try {
-        const reviews = await fetchDifferentMovieFeatures(movieId, 'reviews');
+        const { results: reviews } = await fetchDifferentMovieFeatures(
+          movieId,
+          'reviews'
+        );
         setState(prevState => ({
           ...prevState,
           loading: false,
@@ -29,18 +32,22 @@ const Reviews = () => {
     getCast();
   }, [movieId]);
 
-  const { reviews } = state;
-  const isReviewsPresent = Object.keys(reviews).length > 0;
-  const { results } = reviews;
-  const reviewsList = isReviewsPresent
-    ? results.map(({ id, author, content }) => (
-        <li key={id}>
-          <Review author={author} content={content} />
-        </li>
-      ))
-    : null;
-
-  return <ul>{reviewsList}</ul>;
+  const { reviews, loading, error } = state;
+  const reviewsList = reviews.map(({ id, author, content }) => (
+    <li key={id}>
+      <Review author={author} content={content} />
+    </li>
+  ));
+  return (
+    <>
+      {loading && <p>Loading</p>}
+      {error && <p>error</p>}
+      {!loading && !reviews.length && (
+        <p>Sorry, there're no reviews for this movie</p>
+      )}
+      <ul>{reviewsList}</ul>
+    </>
+  );
 };
 
 export default Reviews;

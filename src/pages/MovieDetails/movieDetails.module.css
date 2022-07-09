@@ -1,0 +1,12 @@
+.infoList {
+  margin-bottom: 30px;
+}
+
+.backBtn {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid;
+  text-decoration: none;
+  border-radius: 18px;
+}

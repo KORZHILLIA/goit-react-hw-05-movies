@@ -8,7 +8,7 @@ import Reviews from 'pages/Reviews';
 
 export const App = () => {
   return (
-    <>
+    <div className="container">
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -17,7 +17,8 @@ export const App = () => {
           <Route path="cast" element={<Cast />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
+        <Route path="*" element={<HomePage />} />
       </Routes>
-    </>
+    </div>
   );
 };

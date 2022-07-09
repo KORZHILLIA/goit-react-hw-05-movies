@@ -1,0 +1,20 @@
+.navList {
+  display: flex;
+  list-style: none;
+  padding: 20px;
+  box-shadow: 0 2px 2px 2px rgba(35, 33, 35, 0.3);
+}
+
+.navLink:not(:last-child) {
+  margin-right: 15px;
+}
+
+.navLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.activeNavLink {
+  composes: navLink;
+  color: tomato;
+}

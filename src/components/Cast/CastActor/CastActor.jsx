@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
+import styles from './castActor.module.css';
 
 const CastActor = ({ name, img, character }) => {
-  const preparedImgSrc = `https://image.tmdb.org/t/p/w500${img}`;
+  const preparedImgSrc = img
+    ? `https://image.tmdb.org/t/p/w500${img}`
+    : 'https://image.tmdb.org/t/p/w500/lXhgCODAbBXL5buk9yEmTpOoOgR.jpg';
+
+  const chooseClassName = img => (img ? null : styles.fallback);
+
   return (
-    <>
-      {img && <img src={preparedImgSrc} alt={name} />}
+    <div className={styles.actor}>
+      {<img className={chooseClassName()} src={preparedImgSrc} alt={name} />}
       <p>Actor: {name}</p>
       <p>Character: {character ? character : 'Unknown'}</p>
-    </>
+    </div>
   );
 };
 

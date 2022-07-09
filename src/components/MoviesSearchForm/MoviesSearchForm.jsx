@@ -1,4 +1,3 @@
-import MovieDetails from 'pages/MovieDetails';
 import { useState } from 'react';
 
 const MoviesSearchForm = ({ onSubmit }) => {
@@ -13,8 +12,7 @@ const MoviesSearchForm = ({ onSubmit }) => {
 
   function transitQuery(event) {
     event.preventDefault();
-    const { query } = state;
-    onSubmit(prevState => ({ ...prevState, query }));
+    onSubmit({ ...state });
     setState({ query: '' });
   }
 

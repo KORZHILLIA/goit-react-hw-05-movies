@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchDifferentMovieFeatures } from 'shared/services/moviesApi';
 import CastActor from './CastActor';
+import styles from './cast.module.css';
 
 const Cast = () => {
   const [state, setState] = useState({
-    cast: {},
+    cast: [],
     loading: false,
     error: null,
   });
@@ -16,7 +17,7 @@ const Cast = () => {
     const getCast = async () => {
       setState(prevState => ({ ...prevState, loading: true }));
       try {
-        const cast = await fetchDifferentMovieFeatures(movieId, 'credits');
+        const { cast } = await fetchDifferentMovieFeatures(movieId, 'credits');
         setState(prevState => ({
           ...prevState,
           loading: false,
@@ -29,23 +30,26 @@ const Cast = () => {
     getCast();
   }, [movieId]);
 
-  const { cast } = state;
-  const isCastPresent = Object.keys(cast).length > 0;
-  const { cast: movieCast } = cast;
-  console.log(movieCast);
-  const castList = isCastPresent
-    ? movieCast.map(({ profile_path, id, original_name, character }) => (
-        <li key={id}>
-          <CastActor
-            img={profile_path}
-            name={original_name}
-            character={character}
-          />
-        </li>
-      ))
-    : null;
-
-  return <ul>{castList}</ul>;
+  const { cast, loading, error } = state;
+  const castList = cast.map(
+    ({ profile_path, id, original_name, character }) => (
+      <li className={styles.actor} key={id}>
+        <CastActor
+          img={profile_path}
+          name={original_name}
+          character={character}
+        />
+      </li>
+    )
+  );
+  return (
+    <>
+      {loading && <p>Loading</p>}
+      {error && <p>{error}</p>}
+      {!loading && !cast.length && <p>Sorry, we have no cast information</p>}
+      {<ul className={styles.list}>{castList}</ul>}
+    </>
+  );
 };
 
 export default Cast;
