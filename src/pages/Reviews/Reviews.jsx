@@ -1,36 +1,41 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchDifferentMovieFeatures } from 'shared/services/moviesApi';
+import { useMovies } from 'shared/hooks/useMovies';
 import Review from 'components/Review';
 
 const Reviews = () => {
-  const [state, setState] = useState({
-    reviews: [],
-    loading: false,
-    error: null,
-  });
+  // const [state, setState] = useState({
+  //   reviews: [],
+  //   loading: false,
+  //   error: null,
+  // });
 
   const { movieId } = useParams();
 
-  useEffect(() => {
-    const getCast = async () => {
-      setState(prevState => ({ ...prevState, loading: true }));
-      try {
-        const { results: reviews } = await fetchDifferentMovieFeatures(
-          movieId,
-          'reviews'
-        );
-        setState(prevState => ({
-          ...prevState,
-          loading: false,
-          reviews,
-        }));
-      } catch (error) {
-        setState(prevState => ({ ...prevState, error: error.message }));
-      }
-    };
-    getCast();
-  }, [movieId]);
+  const [state] = useMovies(
+    { reviews: [], loading: false, error: null },
+    movieId,
+    'reviews'
+  );
+
+  // useEffect(() => {
+  //   const getCast = async () => {
+  //     setState(prevState => ({ ...prevState, loading: true }));
+  //     try {
+  //       const { results: reviews } = await fetchDifferentMovieFeatures(
+  //         movieId,
+  //         'reviews'
+  //       );
+  //       setState(prevState => ({
+  //         ...prevState,
+  //         loading: false,
+  //         reviews,
+  //       }));
+  //     } catch (error) {
+  //       setState(prevState => ({ ...prevState, error: error.message }));
+  //     }
+  //   };
+  //   getCast();
+  // }, [movieId]);
 
   const { reviews, loading, error } = state;
   const reviewsList = reviews.map(({ id, author, content }) => (

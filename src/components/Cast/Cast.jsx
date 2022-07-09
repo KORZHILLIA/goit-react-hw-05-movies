@@ -1,34 +1,15 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchDifferentMovieFeatures } from 'shared/services/moviesApi';
+import { useMovies } from 'shared/hooks/useMovies';
 import CastActor from './CastActor';
 import styles from './cast.module.css';
 
 const Cast = () => {
-  const [state, setState] = useState({
-    cast: [],
-    loading: false,
-    error: null,
-  });
-
   const { movieId } = useParams();
-
-  useEffect(() => {
-    const getCast = async () => {
-      setState(prevState => ({ ...prevState, loading: true }));
-      try {
-        const { cast } = await fetchDifferentMovieFeatures(movieId, 'credits');
-        setState(prevState => ({
-          ...prevState,
-          loading: false,
-          cast,
-        }));
-      } catch (error) {
-        setState(prevState => ({ ...prevState, error: error.message }));
-      }
-    };
-    getCast();
-  }, [movieId]);
+  const [state] = useMovies(
+    { cast: [], loading: false, error: null },
+    movieId,
+    'credits'
+  );
 
   const { cast, loading, error } = state;
   const castList = cast.map(

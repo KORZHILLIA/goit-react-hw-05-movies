@@ -1,40 +1,22 @@
-import { useState, useEffect } from 'react';
 import { Link, useParams, useLocation, Outlet } from 'react-router-dom';
-import { fetchDifferentMovieFeatures } from 'shared/services/moviesApi';
 import MovieExplicit from 'components/MovieExplicit';
 import styles from './movieDetails.module.css';
+import { useMovies } from 'shared/hooks/useMovies';
 
 const MovieDetails = () => {
-  const [state, setState] = useState({
-    movie: {},
-    loading: false,
-    error: null,
-  });
-
   const { movieId } = useParams();
+  const [state] = useMovies(
+    { movie: {}, loading: false, error: null },
+    movieId,
+    ''
+  );
+
   const location = useLocation();
   const backRef =
     location.state?.from ?? JSON.parse(localStorage.getItem('backRef'));
   if (location.state) {
     localStorage.setItem('backRef', JSON.stringify(location.state.from));
   }
-
-  useEffect(() => {
-    const getMovie = async () => {
-      setState(prevState => ({ ...prevState, loading: true }));
-      try {
-        const requiredMovie = await fetchDifferentMovieFeatures(movieId);
-        setState(prevState => ({
-          ...prevState,
-          loading: false,
-          movie: requiredMovie,
-        }));
-      } catch (error) {
-        setState(prevState => ({ ...prevState, error: error.message }));
-      }
-    };
-    getMovie();
-  }, [movieId]);
 
   const { movie, error, loading } = state;
   const {
