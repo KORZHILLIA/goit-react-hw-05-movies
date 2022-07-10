@@ -1,32 +1,17 @@
-import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { getTrendingMoviesForDay } from 'shared/services/moviesApi';
+import { useMovies } from 'shared/hooks/useMovies';
 const HomePage = () => {
-  const [state, setState] = useState({
-    movies: [],
-    loading: false,
-    error: null,
-  });
-
   const location = useLocation();
 
-  useEffect(() => {
-    const getTrendingMovies = async () => {
-      try {
-        setState(prevState => ({ ...prevState, loading: true }));
-        const { results: movies } = await getTrendingMoviesForDay();
-        setState(prevState => ({ ...prevState, loading: false, movies }));
-      } catch (error) {
-        setState(prevState => ({
-          ...prevState,
-          loading: false,
-          movies: [],
-          error: error.message,
-        }));
-      }
-    };
-    getTrendingMovies();
-  }, []);
+  const [state] = useMovies(
+    {
+      movies: [],
+      loading: false,
+      error: null,
+    },
+    0,
+    'getTrendingMovies'
+  );
 
   const { movies, loading, error } = state;
   const homePageMovies = movies.map(({ original_title, id }) => (

@@ -1,7 +1,7 @@
 import { Link, useParams, useLocation, Outlet } from 'react-router-dom';
+import { useMovies } from 'shared/hooks/useMovies';
 import MovieExplicit from 'components/MovieExplicit';
 import styles from './movieDetails.module.css';
-import { useMovies } from 'shared/hooks/useMovies';
 
 const MovieDetails = () => {
   const { movieId } = useParams();

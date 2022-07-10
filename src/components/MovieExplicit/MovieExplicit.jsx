@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import styles from './movieExplicit.module.css';
 
@@ -7,6 +8,7 @@ const MovieExplicit = ({ img, title, date, score, overview, genres }) => {
     : 'https://image.tmdb.org/t/p/w500/lXhgCODAbBXL5buk9yEmTpOoOgR.jpg';
   const preparedReleaseDate = date.slice(0, 4);
   const allGenres = genres.map(genre => genre.name).join(', ');
+
   return (
     <div className={styles.explicitWrapper}>
       <img src={preparedImgSrc} alt={title} />
@@ -47,4 +49,4 @@ MovieExplicit.propTypes = {
   ),
 };
 
-export default MovieExplicit;
+export default memo(MovieExplicit);

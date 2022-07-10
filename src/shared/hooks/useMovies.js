@@ -1,20 +1,40 @@
 import { useState, useEffect } from 'react';
-import { fetchDifferentMovieFeatures } from '../services/moviesApi';
+import {
+  fetchDifferentMovieFeatures,
+  fetchMoviesByQuery,
+  getTrendingMoviesForDay,
+} from '../services/moviesApi';
+
+let requiredInfo = null;
 
 export function useMovies(initialState, dependenceVar, fetchParameter) {
-  const [state, setState] = useState({ ...initialState });
+  const [state, setState] = useState(initialState);
   const firstStateKey = Object.keys(state)[0];
 
   useEffect(() => {
+    if (dependenceVar === null) {
+      return;
+    }
     const getInfoFunction = async () => {
       try {
         setState(prevState => ({ ...prevState, loading: true }));
-        const requiredInfo = await fetchDifferentMovieFeatures(
-          dependenceVar,
-          fetchParameter
-        );
+
+        if (fetchParameter === 'searchMoviesByQuery') {
+          requiredInfo = await fetchMoviesByQuery(dependenceVar);
+        } else if (fetchParameter === 'getTrendingMovies') {
+          requiredInfo = await getTrendingMoviesForDay();
+        } else {
+          requiredInfo = await fetchDifferentMovieFeatures(
+            dependenceVar,
+            fetchParameter
+          );
+        }
         let finalResult = requiredInfo;
-        if (fetchParameter === 'reviews') {
+        if (
+          fetchParameter === 'reviews' ||
+          fetchParameter === 'searchMoviesByQuery' ||
+          fetchParameter === 'getTrendingMovies'
+        ) {
           const { results } = requiredInfo;
           finalResult = results;
         }
@@ -28,11 +48,15 @@ export function useMovies(initialState, dependenceVar, fetchParameter) {
           [firstStateKey]: finalResult,
         }));
       } catch (error) {
-        setState(prevState => ({ ...prevState, error: error.message }));
+        setState(prevState => ({
+          ...prevState,
+          loading: false,
+          error: error.message,
+        }));
       }
     };
     getInfoFunction();
   }, [firstStateKey, dependenceVar, fetchParameter]);
 
-  return [state, setState, useEffect];
+  return [state];
 }

@@ -1,14 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useMovies } from 'shared/hooks/useMovies';
 import Review from 'components/Review';
+import styles from './reviews.module.css';
 
 const Reviews = () => {
-  // const [state, setState] = useState({
-  //   reviews: [],
-  //   loading: false,
-  //   error: null,
-  // });
-
   const { movieId } = useParams();
 
   const [state] = useMovies(
@@ -17,29 +12,9 @@ const Reviews = () => {
     'reviews'
   );
 
-  // useEffect(() => {
-  //   const getCast = async () => {
-  //     setState(prevState => ({ ...prevState, loading: true }));
-  //     try {
-  //       const { results: reviews } = await fetchDifferentMovieFeatures(
-  //         movieId,
-  //         'reviews'
-  //       );
-  //       setState(prevState => ({
-  //         ...prevState,
-  //         loading: false,
-  //         reviews,
-  //       }));
-  //     } catch (error) {
-  //       setState(prevState => ({ ...prevState, error: error.message }));
-  //     }
-  //   };
-  //   getCast();
-  // }, [movieId]);
-
   const { reviews, loading, error } = state;
   const reviewsList = reviews.map(({ id, author, content }) => (
-    <li key={id}>
+    <li className={styles.review} key={id}>
       <Review author={author} content={content} />
     </li>
   ));

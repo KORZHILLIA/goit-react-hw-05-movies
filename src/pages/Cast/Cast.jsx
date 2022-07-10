@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useMovies } from 'shared/hooks/useMovies';
-import CastActor from './CastActor';
+import CastActor from '../../components/CastActor';
 import styles from './cast.module.css';
 
 const Cast = () => {

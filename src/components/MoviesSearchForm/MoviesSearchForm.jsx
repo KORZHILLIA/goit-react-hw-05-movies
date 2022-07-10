@@ -1,20 +1,10 @@
-import { useState } from 'react';
+import { useSearchForm } from '../../shared/hooks/useSearchForm';
 
 const MoviesSearchForm = ({ onSubmit }) => {
-  const [state, setState] = useState({
-    query: '',
-  });
-
-  function inputChangeHandler({ target }) {
-    const { name, value } = target;
-    setState(prevState => ({ ...prevState, [name]: value }));
-  }
-
-  function transitQuery(event) {
-    event.preventDefault();
-    onSubmit({ ...state });
-    setState({ query: '' });
-  }
+  const [state, inputChangeHandler, transitQuery] = useSearchForm(
+    { query: '' },
+    onSubmit
+  );
 
   const { query } = state;
 

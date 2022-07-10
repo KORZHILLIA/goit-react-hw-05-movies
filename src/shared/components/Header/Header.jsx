@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { headerItems } from 'components/Header/headerItems';
+import { headerItems } from './headerItems';
 import styles from './header.module.css';
 
 const Header = () => {
@@ -13,6 +13,7 @@ const Header = () => {
       </NavLink>
     </li>
   ));
+
   return (
     <header>
       <nav>

@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import Header from './Header';
+import Header from '../shared/components/Header';
 import HomePage from 'pages/HomePage';
 import Movies from 'pages/Movies';
 import MovieDetails from 'pages/MovieDetails';
-import Cast from './Cast';
+import Cast from 'pages/Cast';
 import Reviews from 'pages/Reviews';
 
 export const App = () => {
